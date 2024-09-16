@@ -1,0 +1,556 @@
+* Valid Example
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+this is some free text
+#+end_src
+
+*** Errors
+#+begin_src
+#+end_src
+* Title
+** Empty Title
+*** Template Properties
+- Title:
+  - ""
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+this is some free text
+#+end_src
+
+*** Errors
+#+begin_src
+Title Errors
+Template title cannot be be empty.
+#+end_src
+** Space in Title
+*** Template Properties
+- Title:
+  - "test "
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+this is some free text
+#+end_src
+
+*** Errors
+#+begin_src
+Title Errors
+`SPACE` is not allowed in template title.
+#+end_src
+** Invalid Character in Title
+*** Template Properties
+- Title:
+  - "test)"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+this is some free text
+#+end_src
+
+*** Errors
+#+begin_src
+Title Errors
+`)` is not allowed in template title.
+#+end_src
+* Arguments
+** Empty Argument
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+  - ""
+*** Raw Template
+#+begin_src
+this is some free text
+#+end_src
+
+*** Errors
+#+begin_src
+Argument Errors
+Argument 0:
+Argument cannot be be empty.
+#+end_src
+** Invalid character in argument
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+  - "(test"
+*** Raw Template
+#+begin_src
+this is some free text
+#+end_src
+
+*** Errors
+#+begin_src
+Argument Errors
+Argument 0: (test
+`(` is not allowed in arguments.
+#+end_src
+** Invalid argument used
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+  - "test"
+*** Raw Template
+#+begin_src
+{not-test}
+#+end_src
+
+*** Errors
+#+begin_src
+Argument Errors
+`not-test` is used as an argument invocation in template. `not-test` does not exist in argument list.
+#+end_src
+* Language
+** No Language
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+- Arguments:
+*** Raw Template
+#+begin_src
+this is some free text
+#+end_src
+
+*** Errors
+#+begin_src
+Language Errors
+Please select a language. Templates must be assigned a specifc language.
+#+end_src
+* Role
+** Role does not exist in language
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{fake-role:"abc"}
+#+end_src
+
+*** Errors
+#+begin_src
+Role Errors
+`fake-role` is used as a role. `fake-role` is not a valid role for language: english
+#+end_src
+* Slot Syntax
+** Empty Input
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+#+end_src
+
+*** Errors
+#+begin_src
+Syntax Errors
+Line: 1 | Column: 0
+Syntax Error:
+
+Empty input
+#+end_src
+** Empty Slot
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{}
+#+end_src
+
+*** Errors
+#+begin_src
+Syntax Errors
+Line: 1 | Column: 0
+Syntax Error:
+
+Slot is empty
+#+end_src
+** Additional `}` used
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+this is some free text }
+#+end_src
+
+*** Errors
+#+begin_src
+Syntax Errors
+Line: 1 | Column: 23
+Syntax Error:
+
+Additional `}` found. Slots must be enclosed between `{` and `}`. Did you forget to include an opening `{` ?
+#+end_src
+** Missing Close Brace
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+this is some free text {"test"
+#+end_src
+
+*** Errors
+#+begin_src
+Syntax Errors
+Line: 1 | Column: 23
+Syntax Error:
+
+Slot is not closed. Missing `}`
+#+end_src
+* Dependency Label Syntax
+** Empty Label
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{:"test"}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 1
+Syntax Error:
+
+Label is Empty.
+#+end_src
+** Empty Source Label
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{nmod<:"test"}
+#+end_src
+
+*** Errors
+#+begin_src
+Syntax Errors
+Line: 1 | Column: 6
+Syntax Error:
+
+Label is Empty.
+#+end_src
+** Empty Role
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{_12:"test"}
+#+end_src
+
+*** Errors
+#+begin_src
+Syntax Errors
+Line: 1 | Column: 1
+Syntax Error:
+
+Role is empty.
+#+end_src
+** Invalid Character in Role Identifier
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{nmo(d:"test"}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 4
+Syntax Error:
+
+Role: nmo
+`(' is not a valid character for Role.
+
+Invalid Role format:
+Format must be in the form:
+One word identifier. eg. `nummod` or `noun`
+
+TIP:
+`(` and `)` are used to enclose function arguments.
+Function arguments can be either:
+One of the Template's arguments.
+or
+A string (eg. "this is a string.").
+or
+A nested function (eg. `my-template()`).
+#+end_src
+** Empty Index
+** Invalid Character in Index
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{nmod_a:"test"}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 6
+Syntax Error:
+
+`a' is not a valid character for Index.
+
+Invalid Index format:
+Format must be in the form:
+Indexes can only contain digits from 0-9. `_` must be followed by a number stating the role's index.
+TIP: The index indicates precedance when multiple roles share the same identifier.
+Separation of multi-word identifiers can be done with
+camelCase (capitaliseEachWord)
+or kebab-case (put-a-hyphen-between-each-word).
+#+end_src
+* Invocation Syntax
+** Empty Invocation
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{nmod:}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 6
+Syntax Error:
+
+Invocation is empty.
+Invocation's are either:
+Function (eg. sub-template)
+or
+Interpolation of argument
+or
+String
+#+end_src
+** Unending String
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{nmod:"}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 5
+Syntax Error:
+
+String is missing closing `"`
+#+end_src
+** Invalid Character in Invocation
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{x"}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 1
+Syntax Error:
+
+Invocation: x"
+`"' is not a valid character for Invocation.
+
+Invalid Invocation format:
+Format must be in the form:
+Function (eg. sub-template)
+or
+Interpolation of argument
+or
+String
+
+TIP: `"` must surround a string invocation.
+#+end_src
+
+* Function Syntax
+** Missing Function Name
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{("test")}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 1
+Syntax Error:
+
+Function (sub-template) is missing a name.
+#+end_src
+** Invalid Character in Function Name
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{nmod:fnam{e()}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 5
+Syntax Error:
+
+Invocation: fnam
+`{' is not a valid character for Invocation.
+
+Invalid Invocation format:
+Format must be in the form:
+Function (eg. sub-template)
+or
+Interpolation of argument
+or
+String
+#+end_src
+** Missing Closing `)`
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{nmod:fname(}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 5
+Syntax Error:
+
+Error with function `fname':
+Function arguments are not closed. Missing `)`
+#+end_src
+** Extra `)`
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+*** Raw Template
+#+begin_src
+{nmod:fname())}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 12
+Syntax Error:
+
+Error with function `fname':
+Extra `)` encountered. Perhaps you forgot to include `(` to open a nested function call?
+#+end_src
+** Argument Invocation
+*** Template Properties
+- Title:
+  - "test"
+- Language:
+  - English
+- Arguments:
+  "x"
+*** Raw Template
+#+begin_src
+{fname(x<)}
+#+end_src
+
+*** Errors
+#+begin_src
+Line: 1 | Column: 7
+Syntax Error:
+
+Error with function `fname':
+Invocation: x<
+`<' is not a valid character for Invocation.
+
+Invalid Invocation format:
+Format must be in the form:
+Function (eg. sub-template)
+or
+Interpolation of argument
+or
+String
+
+TIP: `<` is prefixed before source labels.
+#+end_src
